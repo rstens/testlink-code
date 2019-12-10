@@ -3979,8 +3979,8 @@ $TLS_info_neverRunByPP_report =
    Test cases <b>with and without tester assignment</b>
    are considered<br />";
 
-$TLS_neverRunByPP_title = "Test Cases Never Runned"; 
-$TLS_link_report_never_run = "Test Cases Never Runned";
+$TLS_neverRunByPP_title = "Test Cases Never Run"; 
+$TLS_link_report_never_run = "Test Cases Never Run";
 
 
 $TLS_commit_id = 'commit id';
