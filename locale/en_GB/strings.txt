@@ -3995,5 +3995,10 @@ $TLS_info_xls_report_results_by_status = '!!Spreasheet Output includes the Test 
 
 
 $TLS_link_report_test_absolute_latest_exec = "Absolute Latest Execution Matrix";
+$TLS_latest_execution = "Latest execution on Context";
+$TLS_resultsTCAbsoluteLatest = "Latest execution is computed over all builds";
+$TLS_info_resultsTCAbsoluteLatest_report = $TLS_resultsTCAbsoluteLatest;
+
+$TLS_resultsTCAbsoluteLatest_title = "Latest execution in Selected Platform  computed over all builds";
 
 // ----- END ------------------------------------------------------------------

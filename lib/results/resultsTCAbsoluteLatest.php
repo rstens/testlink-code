@@ -27,10 +27,13 @@ $smarty = new TLSmarty;
 $metricsMgr = new tlTestPlanMetrics($db);
 $tplan_mgr  = &$metricsMgr; 
 
+
 $args = init_args($db);
+
 list($gui,$tproject_info,$labels,$cfg) = 
   initializeGui($db,$args,$smarty->getImages(),$tplan_mgr);
 $args->cfg = $cfg;
+
 
 $renderHTML = true;
 
@@ -43,6 +46,7 @@ $renderHTML = true;
 // This created a block on NOT RUN QUERY, 
 // but anyway will produce an enormous and unmanageable matrix on screen
 //
+
 switch ($args->doAction) {
   case 'result':
     $tpl = $templateCfg->default_template;
@@ -78,6 +82,8 @@ function init_args(&$dbHandler)
 
   $args = new stdClass();
   R_PARAMS($iParams,$args);
+
+  $args->format = intval($args->format);
 
   $args->getSpreadsheetBy = isset($_REQUEST['sendSpreadSheetByMail_x']) ? 'email' : null;
 
@@ -184,7 +190,7 @@ function buildMatrix(&$guiObj,&$argsObj,$forceFormat=null) {
   }
   
   // --------------------------------------------------------------------
-  $columns[] = array('title_key' => 'last_execution', 
+  $columns[] = array('title_key' => 'latest_execution', 
                      'type' => 'status', 'width' => 100);
 
   $columns[] = array('title_key' => 'latest_exec_notes', 
@@ -250,9 +256,12 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
 
   $guiObj = new stdClass();
   $guiObj->map_status_css = null;
-  $guiObj->title = lang_get('title_test_report_all_builds');
+  $guiObj->title = lang_get('resultsTCAbsoluteLatest_title');
+  $guiObj->pageTitle = $guiObj->title;
+
   $guiObj->printDate = '';
   $guiObj->matrix = array();
+  $guiObj->platform_id = $argsObj->platform_id; 
 
   $guiObj->platforms = 
     $tplanMgr->getPlatforms($argsObj->tplan_id,array('outputFormat' => 'map'));
@@ -285,6 +294,7 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
 
   $L10N = init_labels(array('design' => null, 
                             'execution' => null, 
+                            'latest_execution' => null, 
                             'history' => 'execution_history',
                             'test_result_matrix_filters' => null, 
                             'too_much_data' => null,
@@ -294,6 +304,7 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
 
   $L10N['not_run'] = lang_get($cfg['results']['status_label']['not_run']);
 
+  $guiObj->report_details = lang_get(basename(__FILE__, '.php')); 
 
   $guiObj->matrixCfg  = config_get('resultMatrixReport');
   $guiObj->buildInfoSet = 
@@ -325,13 +336,9 @@ function initializeGui(&$dbHandler,&$argsObj,$imgSet,&$tplanMgr)
  *
  */
 function createSpreadsheet($gui,$args,$media) {
-  $buildIDSet = $args->builds->idSet;
-  $latestBuild = $args->builds->latest;
-
   $lbl = initLblSpreadsheet();
   $cellRange = setCellRangeSpreadsheet();
   $style = initStyleSpreadsheet();
-
 
   $objPHPExcel = new PHPExcel();
   $lines2write = xlsStepOne($objPHPExcel,$style,$lbl,$gui);
@@ -346,74 +353,27 @@ function createSpreadsheet($gui,$args,$media) {
   //                  displayabled or not according test project configuration
   //                  IMHO has no sense work without priority
   // 
-  // Exec result on Build 1
-  // Assigned To
-  // Date
-  // Tester
-  // Notes
-  // Duration
-  //
-  // Exec result on Build 2
-  // Assigned To
-  // ...
-  // ...
-  // Exec result on Build N
-  //
-  //
-  // Exec result ON LATEST CREATED Build
-  // Exec notes ON LATEST CREATED Build 
   // Latest Execution result (Hmm need to explain better)
   // Latest Execution notes
   // 
-  $dataHeader = array($lbl['title_test_suite_name'],$lbl['title_test_case_title']);
+  $dataHeader = array($lbl['title_test_suite_name'],
+                      $lbl['title_test_case_title']);
 
-  if( $showPlatforms = !is_null($gui->platforms) )
-  {
+  if( $showPlatforms = !is_null($gui->platforms) ) {
     $dataHeader[] = $lbl['platform'];
   }
 
-  if($gui->options->testPriorityEnabled)
-  {  
+  if ($gui->options->testPriorityEnabled) {  
     $dataHeader[] = $lbl['priority'];
   }
 
 
-  $gui->filterFeedback = null;
-  foreach($buildIDSet as $iix)
-  {
-    $dataHeader[] = $lbl['build'] . ' ' . $gui->buildInfoSet[$iix]['name'];
-    $dataHeader[] = $lbl['assigned_to'];
-    $dataHeader[] = $lbl['date_time_run'];
-    $dataHeader[] = $lbl['test_exec_by'];
-    $dataHeader[] = $lbl['notes'];
-    $dataHeader[] = $lbl['execution_duration'];
-
-    if($gui->filterApplied)
-    {
-      $gui->filterFeedback[] = $gui->buildInfoSet[$iix]['name'];
-    }
-  }  
-
-
-  // Now the magic
-  if( $gui->matrixCfg->buildColumns['showExecutionResultLatestCreatedBuild'] )
-  {  
-    $dataHeader[] = $lbl['result_on_last_build'] . ' ' . $latestBuild->name;
-  }
-
-  if( $gui->matrixCfg->buildColumns['showExecutionNoteLatestCreatedBuild'] )
-  {  
-    $dataHeader[] = $lbl['test_exec_notes_latest_created_build'];
-  }
-
-
-  $dataHeader[] = $lbl['last_execution'];
+  $dataHeader[] = $lbl['latest_execution'];
   $dataHeader[] = $lbl['latest_exec_notes'];
 
   $startingRow = count($lines2write) + 2; // MAGIC
   $cellArea = "A{$startingRow}:";
-  foreach($dataHeader as $zdx => $field)
-  {
+  foreach ($dataHeader as $zdx => $field) {
     $cellID = $cellRange[$zdx] . $startingRow; 
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellID, $field);
     $cellAreaEnd = $cellRange[$zdx];
@@ -424,10 +384,8 @@ function createSpreadsheet($gui,$args,$media) {
 
   $startingRow++;
   $qta_loops = count($gui->matrix);
-  for($idx = 0; $idx < $qta_loops; $idx++)
-  {
-		foreach($gui->matrix[$idx] as $ldx => $field)
-		{
+  for($idx = 0; $idx < $qta_loops; $idx++) {
+		foreach($gui->matrix[$idx] as $ldx => $field) {
 			$cellID = $cellRange[$ldx] . $startingRow; 
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellID, $field);
 		}
@@ -435,14 +393,14 @@ function createSpreadsheet($gui,$args,$media) {
   }
   
   // Final step
-  $tmpfname = tempnam(config_get('temp_dir'),"resultsTC.tmp");
+  $fname = basename(__FILE__, '.php') . '_'; 
+  $tmpfname = tempnam(config_get('temp_dir'), $fname . ".tmp");
   $objPHPExcel->setActiveSheetIndex(0);
   $xlsType = 'Excel5';                               
   $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, $xlsType);  
   $objWriter->save($tmpfname);
   
-  if($args->getSpreadsheetBy == 'email')
-  {
+  if ($args->getSpreadsheetBy == 'email') {
     require_once('email_api.php');
 
     $ema = new stdClass();
@@ -451,17 +409,15 @@ function createSpreadsheet($gui,$args,$media) {
     $ema->subject = $gui->mailCfg->subject;
     $ema->message = $gui->mailCfg->subject;
     
-    $dum = uniqid("resultsTC_") . '.xls';
+    $dum = uniqid($fname) . '.xls';
     $oops = array('attachment' => 
                   array('file' => $tmpfname, 'newname' => $dum),
                   'exit_on_error' => true, 'htmlFormat' => true);
     $email_op = email_send_wrapper($ema,$oops);
     unlink($tmpfname);
     exit(); 
-  } 
-  else
-  {
-    downloadXls($tmpfname,$xlsType,$gui,'resultsTC_');
+  } else {
+    downloadXls($tmpfname,$xlsType,$gui,$fname);
   } 
 }
 
@@ -588,14 +544,19 @@ function buildDataSet(&$db,&$args,&$gui,&$metrics,$labels,$forceFormat=null)
           }  
         }
 
-        $execOut = array('text' => '', 'value' => '', 'cssClass' => '');
-        $execOut['text'] = $labels[$rf['status']] .
-                           sprintf($labels['versionTag'],$rf['version']);
-    
-        $execOut['value'] = $rf['status'];
-        $execOut['cssClass'] = $gui->map_status_css[$rf['status']];
-        $rows[] = $execOut;
+        $statusVerbose = $labels[$rf['status']] .
+                        sprintf($labels['versionTag'],$rf['version']);
 
+        if ($fo == FORMAT_HTML) {
+          $execOut = array('text' => '', 'value' => '', 'cssClass' => '');
+          $execOut['text'] = $statusVerbose;
+          $execOut['value'] = $rf['status'];
+          $execOut['cssClass'] = $gui->map_status_css[$rf['status']];
+          $rows[] = $execOut;
+        }
+        else {
+          $rows[] = $statusVerbose;
+        }
         $nv = '';
         if (isset($rf['execution_notes'])) {
           $nv = is_null($rf['execution_notes']) ? '' : 
@@ -630,9 +591,10 @@ function initLblSpreadsheet() {
                            'generated_by_TestLink_on' => null,
                            'testplan' => null,
                            'result_on_last_build' => null,
-                           'last_execution' => null,
+                           'latest_execution' => null,
                            'assigned_to' => null,
-                           'latest_exec_notes' => null));
+                           'latest_exec_notes' => null,
+                           'important_notice' => null));
   return $lbl;
 } 
 
@@ -672,6 +634,7 @@ function xlsStepOne(&$oj,$style,&$lbl,&$gui) {
   $dummy = '';
   $lines2write = array(array($lbl['testproject'],$gui->tproject_name),
                        array($lbl['testplan'],$gui->tplan_name),
+                       array($lbl['important_notice'],$gui->report_details),
                        array($lbl['generated_by_TestLink_on'],
                        localize_dateOrTimeStamp(null,$dummy,'timestamp_format',time())));
 
@@ -704,13 +667,7 @@ function initCols()
 function doProcess(&$dbH,&$args,&$gui,&$metricsMgr) 
 {
   $opt = array('getExecutionNotes' => true);
-  if($args->format == FORMAT_XLS) {
-    $opt = array('getExecutionNotes' => true, 
-                 'getTester' => true,
-                 'getUserAssignment' => true, 
-                 'getExecutionTimestamp' => true, 
-                 'getExecutionDuration' => true);
-  }    
+
   $opt = array('output' => 'array');
   $neverRunOnPP = (array)$metricsMgr->getNeverRunOnSinglePlatform($args->tplan_id,$args->platform_id);
 

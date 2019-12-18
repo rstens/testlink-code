@@ -30,13 +30,23 @@ Build & Platform ARE IGNORED
 </head>
 <body>
 
+<!-- To avoid refresh when sending mail --> 
+<iframe name="avoidPageRefreshWhenSendingMail" style="display:none;"></iframe>
+
+
 {if $gui->printDate == ''}
 {* +++++++++++++++++++++++++++ *}
 {* Form to launch Excel Export *}
+{*  target="avoidPageRefreshWhenSendingMail" *}
 <form name="resultsTCAbsoluteLatest" 
       id="resultsTCAbsoluteLatest" METHOD="POST"
-      target="avoidPageRefreshWhenSendindMail"
-      action="lib/results/resultsTCAbsoluteLatest.php?format=3&do_action=result&tplan_id={$gui->tplan_id}&tproject_id={$gui->tproject_id}&buildListForExcel={$gui->buildListForExcel}">
+      
+      action="lib/results/resultsTCAbsoluteLatest.php?format=3&doAction=result&tplan_id={$gui->tplan_id}&tproject_id={$gui->tproject_id}">
+
+  <input type="hidden" 
+         name="platform_id" id="platform_id" 
+         value="{$gui->platform_id}">
+
 
   {if $gui->apikey != ''}
   <input type="hidden" name="apikey" id="apikey" value="{$gui->apikey}">
@@ -64,7 +74,13 @@ Build & Platform ARE IGNORED
 
 <div class="workBack">
 {include file="inc_result_tproject_tplan.tpl" 
-         arg_tproject_name=$gui->tproject_name arg_tplan_name=$gui->tplan_name arg_build_set=$gui->filterFeedback}	
+         arg_tproject_name=$gui->tproject_name 
+         arg_tplan_name=$gui->tplan_name 
+         arg_build_set=''}	
+
+<br />
+<p class="italic">{$labels.info_resultsTCAbsoluteLatest_report}</p>
+<br />
 
 {foreach from=$gui->tableSet key=idx item=matrix}
   {$tableID="table_$idx"}
@@ -79,11 +95,12 @@ Build & Platform ARE IGNORED
 <br />
 
 {$labels.generated_by_TestLink_on} {$smarty.now|date_format:$gsmarty_timestamp_format}
+
+{* 
 <p>{$labels.elapsed_seconds} {$gui->elapsed_time}</p>
+*}
 </div>
 
-<!-- To avoid refresh when sending mail --> 
-<iframe name="avoidPageRefreshWhenSendindMail" style="display:none;"></iframe>
 
 </body>
 </html>
