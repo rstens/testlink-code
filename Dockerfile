@@ -6,5 +6,5 @@ RUN apt update -q && apt install -yqq --force-yes \
 # Start mysql
 RUN /etc/init.d/mysql 'start'
 
-WORKDIR /var/www/public
+WORKDIR /var/www
 COPY . ./
