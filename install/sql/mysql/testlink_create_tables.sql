@@ -66,7 +66,7 @@ CREATE TABLE /*prefix*/attachments (
   `file_path` varchar(250) default '',
   `file_size` int(11) NOT NULL default '0',
   `file_type` varchar(250) NOT NULL default '',
-  `date_added` TIMESTAMP NOT NULL default  CURRENT_TIMESTAMP,
+  `date_added` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `content` longblob,
   `compression_type` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
@@ -82,7 +82,7 @@ CREATE TABLE /*prefix*/builds (
   `active` tinyint(1) NOT NULL default '1',
   `is_open` tinyint(1) NOT NULL default '1',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `release_date` date NULL,
   `closed_on_date` date NULL,
   `commit_id` varchar(64) NULL,
@@ -179,7 +179,7 @@ CREATE TABLE /*prefix*/custom_fields (
 
 CREATE TABLE /*prefix*/db_version (
   `version` varchar(50) NOT NULL default 'unknown',
-  `upgrade_ts` TIMESTAMP NOT NULL default  CURRENT_TIMESTAMP,
+  `upgrade_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `notes` text,
   PRIMARY KEY  (`version`)
 ) DEFAULT CHARSET=utf8;
@@ -258,7 +258,7 @@ CREATE TABLE /*prefix*/execution_tcsteps_wip (
    platform_id int(10) unsigned NOT NULL default '0',
    build_id int(10) unsigned NOT NULL default '0',
    tester_id int(10) unsigned default NULL,
-   creation_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   creation_ts TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
    notes text,
    status char(1) default NULL,
   PRIMARY KEY  (id),
@@ -273,8 +273,8 @@ CREATE TABLE /*prefix*/inventory (
 	`name` VARCHAR(255) NOT NULL ,
 	`ipaddress` VARCHAR(255)  NOT NULL ,
 	`content` TEXT NULL ,
-	`creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`modification_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
+	`modification_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
 	PRIMARY KEY (`id`),
 	KEY /*prefix*/inventory_idx1 (`testproject_id`)
 ) DEFAULT CHARSET=utf8; 
@@ -345,7 +345,7 @@ CREATE TABLE /*prefix*/req_coverage (
   `link_status` int(11) NOT NULL DEFAULT '1',
   `is_active` int(11) NOT NULL DEFAULT '1',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `review_requester_id` int(10) unsigned default NULL,
   `review_request_ts` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (id),
@@ -381,9 +381,9 @@ CREATE TABLE /*prefix*/req_versions (
   `is_open` tinyint(1) NOT NULL default '1',
   `expected_coverage` int(10) NOT NULL default '1',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `modifier_id` int(10) unsigned default NULL,
-  `modification_ts` datetime NOT NULL default CURRENT_TIMESTAMP,
+  `modification_ts` datetime NOT NULL default  '2020-01-13 12:00:00',
   `log_message` text,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
@@ -394,7 +394,7 @@ CREATE TABLE /*prefix*/req_relations (
   `destination_id` int(10) unsigned NOT NULL,
   `relation_type` smallint(5) unsigned NOT NULL default '1',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -455,9 +455,9 @@ CREATE TABLE /*prefix*/tcversions (
   `preconditions` text,
   `importance` smallint(5) unsigned NOT NULL default '2',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `updater_id` int(10) unsigned default NULL,
-  `modification_ts` datetime NOT NULL default  CURRENT_TIMESTAMP,
+  `modification_ts` datetime NOT NULL default  '2020-01-13 12:00:00',
   `active` tinyint(1) NOT NULL default '1',
   `is_open` tinyint(1) NOT NULL default '1',
   `execution_type` tinyint(1) NOT NULL default '1' COMMENT '1 -> manual, 2 -> automated',
@@ -485,7 +485,7 @@ CREATE TABLE /*prefix*/testplan_tcversions (
   urgency smallint(5) NOT NULL default '2',
   platform_id int(10) unsigned NOT NULL default '0',
   author_id int(10) unsigned default NULL,
-  creation_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_ts TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY  (id),
   UNIQUE KEY /*prefix*/testplan_tcversions_tplan_tcversion (testplan_id,tcversion_id,platform_id)
 ) DEFAULT CHARSET=utf8;
@@ -564,7 +564,7 @@ CREATE TABLE /*prefix*/user_assignments (
   `build_id` int(10) unsigned default '0',
   `deadline_ts` datetime NULL,
   `assigner_id`  int(10) unsigned default '0',
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `status` int(10) unsigned default '1',
   PRIMARY KEY  (`id`),
   KEY /*prefix*/user_assignments_feature_id (`feature_id`)
@@ -585,7 +585,7 @@ CREATE TABLE /*prefix*/users (
   `script_key` varchar(32) NULL,
   `cookie_string` varchar(64) NOT NULL default '',
   `auth_method` varchar(10) NULL default '',
-  `creation_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` timestamp NOT NULL default  '2020-01-13 12:00:00',
   `expiration_date` date DEFAULT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY /*prefix*/users_login (`login`),
@@ -650,9 +650,9 @@ CREATE TABLE /*prefix*/req_revisions (
   `expected_coverage` int(10) NOT NULL default '1',
   `log_message` text,
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `modifier_id` int(10) unsigned default NULL,
-  `modification_ts` datetime NOT NULL default  CURRENT_TIMESTAMP,
+  `modification_ts` datetime NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY  (`id`),
   UNIQUE KEY /*prefix*/req_revisions_uidx1 (`parent_id`,`revision`)
 ) DEFAULT CHARSET=utf8;
@@ -669,9 +669,9 @@ CREATE TABLE /*prefix*/req_specs_revisions (
   `type` char(1) default NULL,
   `log_message` text,
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   `modifier_id` int(10) unsigned default NULL,
-  `modification_ts` datetime NOT NULL default  CURRENT_TIMESTAMP,
+  `modification_ts` datetime NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY  (`id`),
   UNIQUE KEY /*prefix*/req_specs_revisions_uidx1 (`parent_id`,`revision`)
 ) DEFAULT CHARSET=utf8;
@@ -739,7 +739,7 @@ CREATE TABLE /*prefix*/text_templates (
   title varchar(100) NOT NULL,
   template_data text,
   author_id int(10) unsigned default NULL,
-  creation_ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_ts TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   is_public tinyint(1) NOT NULL default '0',
   UNIQUE KEY idx_text_templates (type,title)
 ) DEFAULT CHARSET=utf8 COMMENT='Global Project Templates';
@@ -753,7 +753,7 @@ CREATE TABLE /*prefix*/testcase_relations (
   `link_status` tinyint(1) NOT NULL default '1',
   `relation_type` smallint(5) unsigned NOT NULL default '1',
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -769,7 +769,7 @@ CREATE TABLE /*prefix*/plugins (
    `basename`  varchar(100) NOT NULL,
    `enabled` tinyint(1) NOT NULL default '0',
    `author_id` int(10) unsigned default NULL,
-   `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
    PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -780,7 +780,7 @@ CREATE TABLE /*prefix*/plugins_configuration (
   `config_type` int(11) NOT NULL,
   `config_value` varchar(255) NOT NULL,
   `author_id` int(10) unsigned default NULL,
-  `creation_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_ts` TIMESTAMP NOT NULL default  '2020-01-13 12:00:00',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
