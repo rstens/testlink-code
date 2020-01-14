@@ -321,7 +321,7 @@ if (($lp = getenv('TESTLINK_LOG_PATH'))) {
  *         user will receive a message on screen. (default)
  * 'SILENT': same that FILE, but user will not receive message on screen.
  */
-$tlCfg->config_check_warning_mode = 'FILE';
+$tlCfg->config_check_warning_mode = 'SILENT';
 
 /**
  * ONCE_FOR_SESSION
@@ -369,12 +369,12 @@ $tlCfg->loggerFilter = null; // default defined on logger.class.php ;
  * Configure using custom_config.inc.php
  * @uses lib/functions/email_api.php
  */
-$g_smtp_host        = '[smtp_host_not_configured]';  # SMTP server MUST BE configured
+$g_smtp_host        = 'apps.smtp.gov.bc.ca';  # SMTP server MUST BE configured
 
 # Configure using custom_config.inc.php
-$g_tl_admin_email     = '[testlink_sysadmin_email_not_configured]'; # for problem/error notification
+$g_tl_admin_email     = 'roland.stens@gmail.com'; # for problem/error notification
 $g_from_email         = '[from_email_not_configured]';  # email sender
-$g_return_path_email  = '[return_path_email_not_configured]';
+$g_return_path_email  = 'roland.stens@gov.bc.ca';
 
 /**
  * Email notification priority (low by default)
@@ -482,20 +482,22 @@ $tlCfg->OAuthServers = array();
 // $tlCfg->OAuthServers[1]['oauth_scope'] = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
 
 // Github
-// $tlCfg->OAuthServers[2]['oauth_enabled'] = true;
-// $tlCfg->OAuthServers[2]['oauth_name'] = 'github';
-// $tlCfg->OAuthServers[2]['oauth_client_id'] = 'CLIENT_ID';
-// $tlCfg->OAuthServers[2]['oauth_client_secret'] = 'CLIENT_SECRET';
+$tlCfg->OAuthServers[2]['oauth_enabled'] = true;
+$tlCfg->OAuthServers[2]['oauth_name'] = 'github';
+$tlCfg->OAuthServers[2]['oauth_client_id'] = '27e0284d7d92f098919d';
+$tlCfg->OAuthServers[2]['oauth_client_secret'] = 'd4ad6b0e4bdcb988ad56d13f6ca729437a5c7e22';
 
 // Can be authorization_code (by default), client_credentials or password
-// $tlCfg->OAuthServers[2]['oauth_grant_type'] = 'authorization_code';  
-// $tlCfg->OAuthServers[2]['oauth_url'] = 'https://github.com/login/oauth/authorize';
+$tlCfg->OAuthServers[2]['oauth_grant_type'] = 'authorization_code';  
+$tlCfg->OAuthServers[2]['oauth_url'] = 'https://github.com/login/oauth/authorize';
 
-// $tlCfg->OAuthServers[2]['token_url'] = 'https://github.com/login/oauth/access_token';
-// false => then the only user will be selected automatically (applied for google)
-// $tlCfg->OAuthServers[2]['oauth_force_single'] = false; 
-// $tlCfg->OAuthServers[2]['oauth_profile'] = 'https://api.github.com/user';
-// $tlCfg->OAuthServers[2]['oauth_scope'] = 'user:email';
+$tlCfg->OAuthServers[2]['token_url'] = 'https://github.com/login/oauth/access_token';
+//false => then the only user will be selected automatically (applied for google)
+$tlCfg->OAuthServers[2]['oauth_force_single'] = false; 
+$tlCfg->OAuthServers[2]['oauth_profile'] = 'https://api.github.com/user';
+$tlCfg->OAuthServers[2]['oauth_scope'] = 'user:email';
+
+$tlCfg->OAuthServers[2]['redirect_uri'] = 'https://testlink-zwmtib-tools.pathfinder.gov.bc.ca/login.php?oauth=github';
 
 //Microsoft
 //$tlCfg->OAuthServers[1]['oauth_enabled'] = true;
