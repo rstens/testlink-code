@@ -253,7 +253,7 @@ switch($db_type) {
     case 'mysql':
     case 'mysqli':
     @$conn_res = $db->connect(NO_DSN, $db_server, $db_admin_name, $db_admin_pass, 'mysql'); 
-    $try_create_user=1;
+    $try_create_user=0;
     break;
 
     default:
