@@ -426,10 +426,11 @@ $g_SMTPAutoTLS = false;
  *  'LDAP' => use password from LDAP Server
  */
 $tlCfg->authentication['domain'] = array('DB' => array('description' => 'DB', 'allowPasswordManagement' => true) ,
-                     'LDAP' => array('description' => 'LDAP', 'allowPasswordManagement' => false) );
+                     'LDAP' => array('description' => 'LDAP', 'allowPasswordManagement' => false),
+                     'OAUTH' => array('description' => 'OAUTH', 'allowPasswordManagement' => false)  );
 
 /* Default Authentication method */
-$tlCfg->authentication['method'] = 'DB';
+$tlCfg->authentication['method'] = 'OAUTH';
 
 // Applies only if authentication methos is DB.
 // Used when:
@@ -497,7 +498,7 @@ $tlCfg->OAuthServers[2]['oauth_force_single'] = false;
 $tlCfg->OAuthServers[2]['oauth_profile'] = 'https://api.github.com/user';
 $tlCfg->OAuthServers[2]['oauth_scope'] = 'user:email';
 
-$tlCfg->OAuthServers[2]['redirect_uri'] = 'https://testlink-zwmtib-tools.pathfinder.gov.bc.ca/login.php?oauth=github';
+//$tlCfg->OAuthServers[2]['redirect_uri'] = 'https://testlink-zwmtib-tools.pathfinder.gov.bc.ca/login.php?oauth=github';
 
 //Microsoft
 //$tlCfg->OAuthServers[1]['oauth_enabled'] = true;
