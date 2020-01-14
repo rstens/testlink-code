@@ -5,4 +5,4 @@
     define('DB_HOST', trim(getenv('DB_HOST')));
     define('DB_NAME', trim(getenv('DB_NAME')));
     define('DB_TABLE_PREFIX', trim(getenv('DB_TABLE_PREFIX')));
-    
+?>
