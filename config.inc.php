@@ -661,7 +661,8 @@ $tlCfg->logo_navbar = 'BCREG_Small.png';
 $tlCfg->navbar_height = 70;
 
 /** Login page could show an informational text */
-$tlCfg->login_info = '<b>BC Registries and Online Services:</b></p>All registrations of businesses, not-for-profit societies, cooperatives, personal property and manufactured homes are administered and supported by BC Registries and Online Services.'; // Empty by default
+$tlCfg->login_info = '<b>BC Registries and Online Services:</b></br>All registrations of businesses, not-for-profit societies, cooperatives, personal property and manufactured homes are administered </br>
+and supported by BC Registries and Online Services.</p>'; // Empty by default
 
 
 
