@@ -654,14 +654,14 @@ $tlCfg->api->id_format = "[ID: %s ]";
 /* [GUI LAYOUT] */
 
 /** Company logo (used by navigation bar and login page page) */
-$tlCfg->logo_login = 'tl-logo-transparent-25.png';
-$tlCfg->logo_navbar = 'tl-logo-transparent-12.5.png';
+$tlCfg->logo_login = 'BCREG_Big.png';
+$tlCfg->logo_navbar = 'BCREG_Small.png';
 
 /** Height of the navbar always displayed  */
 $tlCfg->navbar_height = 70;
 
 /** Login page could show an informational text */
-$tlCfg->login_info = ''; // Empty by default
+$tlCfg->login_info = '<b>BC Registries and Online Services:</b></p>All registrations of businesses, not-for-profit societies, cooperatives, personal property and manufactured homes are administered and supported by BC Registries and Online Services.'; // Empty by default
 
 
 
