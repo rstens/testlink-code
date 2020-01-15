@@ -485,8 +485,8 @@ $tlCfg->OAuthServers = array();
 // Github
 $tlCfg->OAuthServers[2]['oauth_enabled'] = true;
 $tlCfg->OAuthServers[2]['oauth_name'] = 'github';
-$tlCfg->OAuthServers[2]['oauth_client_id'] = '27e0284d7d92f098919d';
-$tlCfg->OAuthServers[2]['oauth_client_secret'] = 'd4ad6b0e4bdcb988ad56d13f6ca729437a5c7e22';
+$tlCfg->OAuthServers[2]['oauth_client_id'] = trim(getenv('OAUTH_CLIENT'));
+$tlCfg->OAuthServers[2]['oauth_client_secret'] = trim(getenv('OAUTH_SECRET'));
 
 // Can be authorization_code (by default), client_credentials or password
 $tlCfg->OAuthServers[2]['oauth_grant_type'] = 'authorization_code';  
@@ -497,8 +497,6 @@ $tlCfg->OAuthServers[2]['token_url'] = 'https://github.com/login/oauth/access_to
 $tlCfg->OAuthServers[2]['oauth_force_single'] = false; 
 $tlCfg->OAuthServers[2]['oauth_profile'] = 'https://api.github.com/user';
 $tlCfg->OAuthServers[2]['oauth_scope'] = 'user:email';
-
-//$tlCfg->OAuthServers[2]['redirect_uri'] = 'https://testlink-zwmtib-tools.pathfinder.gov.bc.ca/login.php?oauth=github';
 
 //Microsoft
 //$tlCfg->OAuthServers[1]['oauth_enabled'] = true;
