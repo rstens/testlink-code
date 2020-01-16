@@ -372,8 +372,8 @@ $tlCfg->loggerFilter = null; // default defined on logger.class.php ;
 $g_smtp_host        = 'apps.smtp.gov.bc.ca';  # SMTP server MUST BE configured
 
 # Configure using custom_config.inc.php
-$g_tl_admin_email     = 'roland.stens@gmail.com'; # for problem/error notification
-$g_from_email         = '[from_email_not_configured]';  # email sender
+$g_tl_admin_email     = 'roland.stens@gov.bc.ca'; # for problem/error notification
+$g_from_email         = 'roland.stens@gov.bc.ca';  # email sender
 $g_return_path_email  = 'roland.stens@gov.bc.ca';
 
 /**
