@@ -414,7 +414,7 @@ $g_smtp_port = 25;
  * @see https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
  *      Opportunistic TLS
  */
-$g_SMTPAutoTLS = false;
+$g_SMTPAutoTLS = true;
 
 // ----------------------------------------------------------------------------
 /* [User Authentication] */
